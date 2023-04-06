@@ -162,8 +162,8 @@
           },
           textures: {
             map: "map/1_earth_8k.jpg",
-            // bumpMap: "map/2_earth_8k.jpg",
-            // specularMap: "map/_earth_8k.jpg",
+            bumpMap: "map/2_earth_8k.jpg",
+            specularMap: "map/_earth_8k.jpg",
           },
         },
         atmosphere: {
@@ -231,7 +231,6 @@
       let render = function () {
         earth.getObjectByName("surface").rotation.y += (1 / 16) * 0.01;
         earth.getObjectByName("atmosphere").rotation.y += (1 / 8) * 0.01;
-        controls.position = 1;
         requestAnimationFrame(render);
         renderer.render(scene, camera);
         controls.update();
