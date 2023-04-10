@@ -2,8 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>earth1</title>
+    <title>earth</title>
   </head>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    canvas {
+      background: url(./assets/starfield.png) no-repeat center / 100%;
+    }
+  </style>
   <body>
     <button>reset</button>
     <script type="importmap">
@@ -21,7 +30,9 @@
       import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 
       // Scene, Camera, Renderer
-      const renderer = new THREE.WebGLRenderer();
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+      });
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1500);
       const cameraAutoRotation = true;
@@ -89,7 +100,7 @@
               varying float intensity;
               void main() {
                 vec3 glow = glowColor * intensity;
-                gl_FragColor = vec4( glow, 1.0 );
+                gl_FragColor = vec4( glow, 0 );
               }
             `,
             side: THREE.BackSide,
@@ -172,8 +183,8 @@
             opacity: 0.8,
           },
           textures: {
-            map: "assets/earthcloudmap.jpg",
-            alphaMap: "assets/earthcloudmaptrans.jpg",
+            map: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthcloudmap.jpg",
+            alphaMap: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthcloudmaptrans.jpg",
           },
           glow: {
             size: 0.02,
@@ -192,11 +203,11 @@
       let galaxy = new THREE.Mesh(galaxyGeometry, galaxyMaterial);
 
       // Load Galaxy Textures
-      textureLoader.crossOrigin = true;
-      textureLoader.load("assets/starfield.png", function (texture) {
-        galaxyMaterial.map = texture;
-        scene.add(galaxy);
-      });
+      textureLoader.crossOrigin = false;
+      // textureLoader.load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/starfield.png", function (texture) {
+      //   galaxyMaterial.map = texture;
+      //   scene.add(galaxy);
+      // });
 
       // Scene, Camera, Renderer Configuration
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -213,6 +224,7 @@
       earth.receiveShadow = true;
       earth.castShadow = true;
       earth.getObjectByName("surface").geometry.center();
+      earth.getObjectByName("surface").rotation.y = 9.5;
 
       // On window resize, adjust camera aspect ratio and renderer size
       window.addEventListener("resize", function () {
@@ -224,7 +236,7 @@
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.minPolarAngle = Math.PI * 0.5;
       controls.maxPolarAngle = Math.PI * 0.5;
-      controls.minDistance = 0;
+      controls.minDistance = 1;
       controls.maxDistance = 10;
 
       // Main render function
@@ -241,6 +253,7 @@
 
       document.querySelector("button").addEventListener("click", function () {
         camera.position.set(1, 1, 1);
+        earth.getObjectByName("surface").rotation.y = 9.5;
       });
     </script>
   </body>
