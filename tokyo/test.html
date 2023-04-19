@@ -141,7 +141,7 @@
     <script type="module">
       import * as THREE from "three";
 
-      import Stats from "three/addons/libs/stats.module.js";
+      // import Stats from "three/addons/libs/stats.module.js";
 
       import { OrbitControls } from "three/addons/controls/OrbitControls.js";
       import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
@@ -154,7 +154,7 @@
       const clock = new THREE.Clock();
       const container = document.getElementById("container");
 
-      const stats = new Stats();
+      // const stats = new Stats();
       // container.appendChild(stats.dom);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -219,12 +219,10 @@
 
         controls.update();
 
-        stats.update();
+        // stats.update();
 
         renderer.render(scene, camera);
       }
-
-      var playAni;
 
       document.querySelector(".btn1").addEventListener("click", function () {
         mixer.timeScale = 1;
