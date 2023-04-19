@@ -115,11 +115,6 @@
   <body>
     <div id="container"></div>
 
-    <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - animation - keyframes<br />
-      Model: <a href="https://artstation.com/artwork/1AGwX" target="_blank" rel="noopener">Littlest Tokyo</a> by <a href="https://artstation.com/glenatron" target="_blank" rel="noopener">Glen Fox</a>, CC Attribution.
-    </div>
-
     <!-- Import maps polyfill -->
     <!-- Remove this when import maps will be widely supported -->
     <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
@@ -150,7 +145,7 @@
       const container = document.getElementById("container");
 
       const stats = new Stats();
-      container.appendChild(stats.dom);
+      // container.appendChild(stats.dom);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -165,7 +160,7 @@
       scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
       const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 100);
-      camera.position.set(5, 2, 8);
+      camera.position.set(5, 5, 0);
 
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.target.set(0, 0.5, 0);
@@ -183,7 +178,7 @@
         function (gltf) {
           const model = gltf.scene;
           model.position.set(1, 1, 0);
-          model.scale.set(0.01, 0.01, 0.01);
+          model.scale.set(1, 1, 1);
           scene.add(model);
 
           mixer = new THREE.AnimationMixer(model);
