@@ -121,6 +121,7 @@
     <div class="btn_wrap">
       <button class="btn1">시작</button>
       <button class="btn2">정지</button>
+      <button class="btn3">역재생</button>
     </div>
     <div id="container"></div>
 
@@ -227,14 +228,12 @@
 
       document.querySelector(".btn1").addEventListener("click", function () {
         mixer.timeScale = 1;
-        // playAni = setInterval(function () {
-        //   var delta = clock.getDelta();
-
-        //   mixer.update(delta);
-        // }, 10);
       });
       document.querySelector(".btn2").addEventListener("click", function () {
         mixer.timeScale = 0;
+      });
+      document.querySelector(".btn3").addEventListener("click", function () {
+        mixer.timeScale = -1;
       });
     </script>
   </body>
