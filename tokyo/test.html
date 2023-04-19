@@ -193,6 +193,7 @@
           mixer = new THREE.AnimationMixer(model);
           mixer.clipAction(gltf.animations[0]).play();
 
+          mixer.timeScale = 0;
           animate();
         },
         undefined,
@@ -211,9 +212,9 @@
       function animate() {
         requestAnimationFrame(animate);
 
-        // const delta = clock.getDelta();
+        const delta = clock.getDelta();
 
-        // mixer.update(delta);
+        mixer.update(delta);
 
         controls.update();
 
@@ -225,14 +226,15 @@
       var playAni;
 
       document.querySelector(".btn1").addEventListener("click", function () {
-        playAni = setInterval(function () {
-          var delta = clock.getDelta();
+        mixer.timeScale = 1;
+        // playAni = setInterval(function () {
+        //   var delta = clock.getDelta();
 
-          mixer.update(delta);
-        }, 10);
+        //   mixer.update(delta);
+        // }, 10);
       });
       document.querySelector(".btn2").addEventListener("click", function () {
-        mixer.paused = true;
+        mixer.timeScale = 0;
       });
     </script>
   </body>
