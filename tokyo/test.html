@@ -109,10 +109,19 @@
         margin-top: 20px;
         padding: 10px;
       }
+      .btn_wrap {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
     </style>
   </head>
 
   <body>
+    <div class="btn_wrap">
+      <button class="btn1">시작</button>
+      <button class="btn2">정지</button>
+    </div>
     <div id="container"></div>
 
     <!-- Import maps polyfill -->
@@ -157,7 +166,7 @@
 
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xbfe3dd);
-      scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+      scene.environment = pmremGenerator.fromScene(scene, 0.04).texture;
 
       const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 100);
       camera.position.set(5, 5, 0);
@@ -202,9 +211,9 @@
       function animate() {
         requestAnimationFrame(animate);
 
-        const delta = clock.getDelta();
+        // const delta = clock.getDelta();
 
-        mixer.update(delta);
+        // mixer.update(delta);
 
         controls.update();
 
@@ -212,6 +221,19 @@
 
         renderer.render(scene, camera);
       }
+
+      var playAni;
+
+      document.querySelector(".btn1").addEventListener("click", function () {
+        playAni = setInterval(function () {
+          var delta = clock.getDelta();
+
+          mixer.update(delta);
+        }, 10);
+      });
+      document.querySelector(".btn2").addEventListener("click", function () {
+        mixer.paused = true;
+      });
     </script>
   </body>
 </html>
