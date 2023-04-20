@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>three.js webgl - animation - keyframes</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <!-- <link type="text/css" rel="stylesheet" href="main.css" /> -->
+    <style>
+      body {
+        background-color: #bfe3dd;
+        color: #000;
+      }
+
+      a {
+        color: #2983ff;
+      }
+
+      body {
+        margin: 0;
+        background-color: #000;
+        color: #fff;
+        font-family: Monospace;
+        font-size: 13px;
+        line-height: 24px;
+        overscroll-behavior: none;
+      }
+
+      a {
+        color: #ff0;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      button {
+        cursor: pointer;
+        text-transform: uppercase;
+      }
+
+      #info {
+        position: absolute;
+        top: 0px;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        text-align: center;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        pointer-events: none;
+        z-index: 1; /* TODO Solve this in HTML */
+      }
+
+      a,
+      button,
+      input,
+      select {
+        pointer-events: auto;
+      }
+
+      .lil-gui {
+        z-index: 2 !important; /* TODO Solve this in HTML */
+      }
+
+      @media all and (max-width: 640px) {
+        .lil-gui.root {
+          right: auto;
+          top: auto;
+          max-height: 50%;
+          max-width: 80%;
+          bottom: 0;
+          left: 0;
+        }
+      }
+
+      #overlay {
+        position: absolute;
+        font-size: 16px;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.7);
+      }
+
+      #overlay button {
+        background: transparent;
+        border: 0;
+        border: 1px solid rgb(255, 255, 255);
+        border-radius: 4px;
+        color: #ffffff;
+        padding: 12px 18px;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      #notSupported {
+        width: 50%;
+        margin: auto;
+        background-color: #f00;
+        margin-top: 20px;
+        padding: 10px;
+      }
+      .btn_wrap {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="btn_wrap">
+      <button class="btn1">시작</button>
+      <button class="btn2">정지</button>
+      <button class="btn3">역재생</button>
+    </div>
+    <div id="container"></div>
+
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./three/build/three.module.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import * as THREE from "three";
+
+      // import Stats from "three/addons/libs/stats.module.js";
+
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+
+      let mixer;
+      let mixer1;
+
+      const clock = new THREE.Clock();
+      const container = document.getElementById("container");
+
+      // const stats = new Stats();
+      // container.appendChild(stats.dom);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      container.appendChild(renderer.domElement);
+
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xbfe3dd);
+      scene.environment = pmremGenerator.fromScene(scene, 0.04).texture;
+
+      const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 100);
+      camera.position.set(5, 1, 9);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.target.set(0, 0, 0);
+      controls.update();
+      controls.enablePan = false;
+      controls.enableDamping = true;
+
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+
+      const loader = new GLTFLoader();
+      loader.setDRACOLoader(dracoLoader);
+      loader.load(
+        "models/hello.glb",
+        function (gltf) {
+          const model = gltf.scene;
+          model.position.set(1, -0.5, 3);
+          model.scale.set(1, 1, 1);
+          scene.add(model);
+
+          mixer = new THREE.AnimationMixer(model);
+          mixer.clipAction(gltf.animations[0]).play();
+
+          // mixer.timeScale = 0;
+          animate();
+        },
+        undefined,
+        function (e) {
+          console.error(e);
+        }
+      );
+
+      const loader1 = new GLTFLoader();
+      loader1.setDRACOLoader(dracoLoader);
+      loader1.load(
+        "models/earth.glb",
+        function (gltf) {
+          const model = gltf.scene;
+          model.position.set(1, 0, 5);
+          model.scale.set(5, 5, 5);
+          scene.add(model);
+
+          mixer1 = new THREE.AnimationMixer(model);
+          mixer1.clipAction(gltf.animations[0]).play();
+
+          // mixer.timeScale = 0;
+          animate();
+        },
+        undefined,
+        function (e) {
+          console.error(e);
+        }
+      );
+
+      window.onresize = function () {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      };
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        const delta = clock.getDelta();
+
+        mixer.update(delta);
+        mixer1.update(delta);
+
+        controls.update();
+
+        // stats.update();
+
+        renderer.render(scene, camera);
+      }
+
+      document.querySelector(".btn1").addEventListener("click", function () {
+        mixer.timeScale = 1;
+        mixer1.timeScale = 1;
+      });
+      document.querySelector(".btn2").addEventListener("click", function () {
+        mixer.timeScale = 0;
+        mixer1.timeScale = 0;
+      });
+      document.querySelector(".btn3").addEventListener("click", function () {
+        mixer.timeScale = -1;
+        mixer1.timeScale = -1;
+      });
+    </script>
+  </body>
+</html>
