@@ -62,20 +62,20 @@
       scene.background = new THREE.Color("#F8F8F8");
 
       // Light
-      const ambientLight = new THREE.AmbientLight("white", 0.5);
-      scene.add(ambientLight);
+      // const ambientLight = new THREE.AmbientLight("white", 0.5);
+      // scene.add(ambientLight);
 
-      const directionalLight = new THREE.DirectionalLight("white", 1);
-      directionalLight.position.x = 1;
-      directionalLight.position.z = 2;
-      scene.add(directionalLight);
+      // const directionalLight = new THREE.DirectionalLight("white", 1);
+      // directionalLight.position.x = 1;
+      // directionalLight.position.z = 2;
+      // scene.add(directionalLight);
 
       // Controls
       const controls = new OrbitControls(camera, renderer.domElement);
 
       // gltf loader
       const gltfLoader = new GLTFLoader();
-      gltfLoader.load("models/math1.glb", (gltf) => {
+      gltfLoader.load("models/light.glb", (gltf) => {
         // console.log(gltf.scene.children[0]);
         const ilbuniMesh = gltf.scene.children[0];
         scene.add(ilbuniMesh);
