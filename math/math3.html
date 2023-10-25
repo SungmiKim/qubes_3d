@@ -59,7 +59,6 @@
       camera.position.y = 6;
       camera.position.z = 8;
       scene.add(camera);
-      scene.background = new THREE.Color("red");
       scene.background = new THREE.Color("#F8F8F8");
 
       // Light
@@ -76,7 +75,7 @@
 
       // gltf loader
       const gltfLoader = new GLTFLoader();
-      gltfLoader.load("models/03.glb", (gltf) => {
+      gltfLoader.load("models/3.glb", (gltf) => {
         console.log(gltf.scene.children[0]);
         const ilbuniMesh = gltf.scene.children[0];
         scene.add(ilbuniMesh);
