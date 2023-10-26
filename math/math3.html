@@ -79,17 +79,17 @@
       scene.add(ambientLight);
 
       const directionalLight = new THREE.DirectionalLight("white", 1);
-      directionalLight.position.x = 10;
-      directionalLight.position.y = 5;
-      directionalLight.position.z = 1;
+      directionalLight.position.x = 1;
+      directionalLight.position.y = 3.8;
+      directionalLight.position.z = 2.5;
       scene.add(directionalLight);
       const helper = new THREE.DirectionalLightHelper(directionalLight, 5);
       scene.add(helper);
 
       const directionalLight2 = new THREE.DirectionalLight("white", 0.5);
-      directionalLight2.position.x = -5;
-      directionalLight2.position.y = -5;
-      directionalLight2.position.z = -5;
+      directionalLight2.position.x = -3.8;
+      directionalLight2.position.y = -0.5;
+      directionalLight2.position.z = -3.8;
       scene.add(directionalLight2);
       const helper2 = new THREE.DirectionalLightHelper(directionalLight2, 5);
       scene.add(helper2);
