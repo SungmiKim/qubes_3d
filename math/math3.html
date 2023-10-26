@@ -61,24 +61,37 @@
       camera.position.y = 6;
       camera.position.z = 8;
       scene.add(camera);
-      scene.background = cubeTextureLoader.setPath("./textures/").load([
-        // + - 순서
-        "px.png",
-        "nx.png",
-        "py.png",
-        "ny.png",
-        "pz.png",
-        "nz.png",
-      ]);
+      // scene.background = new THREE.Color("#F8F8F8");
+      scene.background = new THREE.Color("#000");
+      // scene.background = cubeTextureLoader.setPath("./textures/").load([
+      //   // + - 순서
+      //   "px.png",
+      //   "nx.png",
+      //   "py.png",
+      //   "ny.png",
+      //   "pz.png",
+      //   "nz.png",
+      // ]);
 
       // Light
       const ambientLight = new THREE.AmbientLight("white", 0.5);
       scene.add(ambientLight);
 
       const directionalLight = new THREE.DirectionalLight("white", 1);
-      directionalLight.position.x = 1;
-      directionalLight.position.z = 2;
+      directionalLight.position.x = 30;
+      directionalLight.position.y = 30;
+      directionalLight.position.z = 10;
       scene.add(directionalLight);
+      const helper = new THREE.DirectionalLightHelper(directionalLight, 5);
+      scene.add(helper);
+
+      const directionalLight2 = new THREE.DirectionalLight("white", 0.5);
+      directionalLight2.position.x = -5;
+      directionalLight2.position.y = -5;
+      directionalLight2.position.z = -5;
+      scene.add(directionalLight2);
+      const helper2 = new THREE.DirectionalLightHelper(directionalLight2, 5);
+      scene.add(helper2);
 
       // Controls
       const controls = new OrbitControls(camera, renderer.domElement);
